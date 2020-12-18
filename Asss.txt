@@ -1,0 +1,925 @@
+Assignment 1
+create database Assignment;
+use assignment;
+create table Member(Member_id integer(5),
+Member_name varchar(30),
+Member_address varchar(50),
+Acc_Open_Date Date,
+Membership_type varchar(20),
+Penalty_Amount integer(7));
+select * from Member;
+create table Book(Book_no integer(6),
+Book_Name varchar(30),
+Author_name varchar(30),
+Cost integer(7), 
+Category char(10));
+select * from Book;
+create table Issue(Lib_Issue_Id integer(10),
+Book_no integer(6),
+Member_id integer(5),
+Issue_Date date,
+Return_date date);
+select * from Issue;
+alter table Member drop Penalty_Amount;
+insert into Member values(1,"Richa Sharma","Pune",
+'10-12-05',"lifetime");
+insert into Member values(1,"Richa Sharma","Pune",
+'2010-05-12',"lifetime");
+insert into Book values(101,"Let Us C","Dennis Richie",
+450,"System");
+insert into Book values(102,"Oracle-Complete Ref","Loni",
+550,"Database");
+insert into Book values(103,"Mastering SQL","Loni",
+250,"Database");
+insert into Book values(104,"PL AQL-Ref","ScottUrman",
+750,"Database");
+select * from Book;
+insert into Member values(2,"Garima Sen","Pune",
+curdate(),"Annual");
+update Book set cost = 300 where book_id=103;
+drop table Issue;
+insert into Issue values(7001,101,1,'2006-10-12',null);
+select * from Issue;
+insert into Issue values(7002,102,2,'2006-12-25',null);
+insert into Issue values(7003,104,1,'2006-1-15',null);
+insert into Issue values(7004,101,1,'2006-4-7',null);
+insert into Issue values(7005,104,2,'2006-11-25',null);
+insert into Issue values(7006,101,3,'2006-2-18',null);
+drop database demo;
+create table ab(id integer(5) unique);
+drop table ab;
+UPDATE book SET  cost = 300 WHERE Book_no=103;
+update book set cost=300 where book_no=103;
+
+create procedure sp_name()
+select * from issue;
+
+call sp_name;
+*************************************************
+
+Assignment 2
+create database assignment2;
+use assignment2;
+CREATE TABLE PUBLISHERS
+(
+    PUBID      integer(3)   PRIMARY KEY,
+    PNAME      VARCHAR(30),
+    EMAIL      VARCHAR(50)  UNIQUE,
+    PHONE      VARCHAR(30)
+);
+
+
+CREATE TABLE  SUBJECTS
+(
+    SUBID      VARCHAR(5) PRIMARY KEY,
+    SNAME      VARCHAR(30)
+);
+
+
+CREATE TABLE  AUTHORS
+(
+    AUID     integer(5)  PRIMARY KEY,
+    ANAME      VARCHAR(30),
+    EMAIL      VARCHAR(50)  UNIQUE,
+    PHONE      VARCHAR(30)
+);
+
+
+
+CREATE TABLE  TITLES
+(
+    TITLEID    integer(5) PRIMARY KEY,
+    TITLE      VARCHAR(30),
+    PUBID      integer(3),
+    SUBID      VARCHAR(5),
+    PUBDATE    DATE,
+    COVER      CHAR(1)  CHECK ( COVER IN ('P','H','p','h')),
+    PRICE      integer(4),
+	CONSTRAINT TITLES_PUBID_FK FOREIGN KEY (PUBID) REFERENCES PUBLISHERS(PUBID),
+	CONSTRAINT TITLES_SUBID_FK FOREIGN KEY (SUBID) REFERENCES SUBJECTS(SUBID)
+);
+
+
+
+CREATE TABLE  TITLEAUTHORS
+(
+    TITLEID    integer(5) ,
+    AUID       integer(5) ,
+    IMPORTANCE integer(2),
+   PRIMARY KEY(TITLEID,AUID),
+   CONSTRAINT  TITLESAUTHORS_TITLEID_FK FOREIGN KEY (TITLEID) REFERENCES TITLES(TITLEID),
+   CONSTRAINT  TITLESAUTHORS_AUTHID_FK FOREIGN KEY (AUID) REFERENCES AUTHORS(AUID)
+);
+
+CREATE TABLE  SUBJECTS_BACKUP
+(
+    SUBID      VARCHAR(5) PRIMARY KEY,
+    SNAME      VARCHAR(30)
+);
+
+ INSERT INTO SUBJECTS VALUES ('ORA','ORACLE DATABASE 10g');
+ INSERT INTO SUBJECTS VALUES ('JAVA','JAVA LANGUAGE');
+ INSERT INTO SUBJECTS VALUES ('JEE','JAVA ENTEPRISE EDITION');
+ INSERT INTO SUBJECTS VALUES ('VB','VISUAL BASIC.NET');
+ INSERT INTO SUBJECTS VALUES ('ASP','ASP.NET');
+
+
+
+ INSERT INTO PUBLISHERS VALUES (1,'WILLEY','WDT@VSNL.NET','91-11-23260877');
+ INSERT INTO PUBLISHERS VALUES (2,'WROX','INFO@WROX.COM',NULL);
+ INSERT INTO PUBLISHERS VALUES (3,'TATA MCGRAW-HILL','FEEDBACK@TATAMCGRAWHILL.COM','91-11-33333322');
+ INSERT INTO PUBLISHERS VALUES (4,'TECHMEDIA','BOOKS@TECHMEDIA.COM','91-11-33257660');
+
+
+
+ INSERT INTO AUTHORS VALUES (101, 'HERBERT SCHILD','HERBERT@YAHOO.COM',NULL);
+ INSERT INTO AUTHORS VALUES (102, 'JAMES GOODWILL','GOODWILL@HOTMAIL.COM',NULL);
+ INSERT INTO AUTHORS VALUES (103, 'DAVAID HUNTER','HUNTER@HOTMAIL.COM',NULL);
+ INSERT INTO AUTHORS VALUES (104, 'STEPHEN WALTHER','WALTHER@GMAIL.COM',NULL);
+ INSERT INTO AUTHORS VALUES (105, 'KEVIN LONEY','LONEY@ORACLE.COM',NULL);
+ INSERT INTO AUTHORS VALUES (106, 'ED. ROMANS','ROMANS@THESERVERSIDE.COM',NULL);
+
+
+
+ INSERT INTO TITLES VALUES (1001,'ASP.NET UNLEASHED',4,'ASP','2002-4-12','P',540);
+ INSERT INTO TITLES VALUES (1002,'ORACLE10G COMP. REF.',3,'ORA','2005-5-1','P',575);
+ INSERT INTO TITLES VALUES (1003,'MASTERING EJB',1,'JEE','2005-2-3','P',475);
+ INSERT INTO TITLES VALUES (1004,'JAVA COMP. REF',3,'JAVA','2005-4-2','P',499);
+ INSERT INTO TITLES VALUES (1005,'PRO. VB.NET',2,'VB','2005-6-15','P',450);
+ select * from titles;
+
+
+
+ INSERT INTO TITLEAUTHORS VALUES (1001,104,1);
+ INSERT INTO TITLEAUTHORS VALUES (1002,105,1);
+
+ INSERT INTO TITLEAUTHORS VALUES (1003,106,1);
+
+ INSERT INTO TITLEAUTHORS VALUES (1004,101,1);
+
+ INSERT INTO TITLEAUTHORS VALUES (1005,103,1);
+ INSERT INTO TITLEAUTHORS VALUES (1005,102,2);
+ 
+select pname,phone,email from publishers;
+select aname,phone from authors;
+select titleid,title,pubdate from titles;
+select auid, titleid, importance from titleauthors;
+
+-- select subject name "oracle" from subjects table
+select sname="ORACLE DATABASE 10g" from subjects;
+
+-- select subject name starts whith 'j'
+select sname from subjects where sname like "j%";
+-- select subject name which contains ".net" .
+select sname from subjects where sname like "%.net";
+-- select author name ends whith 'er'.
+select aname from authors where aname like "%er";
+-- select publishers name which contains "hill".
+select pname from publishers where pname like "%hill%" ;
+
+
+/*1.select title from title table having price less than 500.
+2. select title from title table published before '3 april'.
+3. select subject name from subject having id as 'java' or 'jee'.
+4. seelct author name from author table id greater than '103'.
+5. select all from title having titleid as 101 or price > 400.
+*/
+
+select title from titles where price < 500;
+select title from titles where pubdate < '2005-03-01';
+select sname from subjects where subid='java' or subid='jee';
+select aname from authors where auid > 103;
+select * from titles having titleid=101 or price> 400;
+-- select all from publishers table  where publisher name is ('TECHMEDIA', 'WROX');
+select * from publishers where pname in ('TECHMEDIA', 'WROX');
+
+/*select maximum price from titles table.
+2. select average importance from titleauthors. 
+3. select number of records from author table.
+4. select sum of prices of all books.
+*/
+
+select max(price) from titles;
+select avg(importance) from titleauthors;
+select count(auid) from authors;
+select sum(price) from titles;
+
+/*1. select title from title table where month is 'Apr'.
+2. select year from system date.
+3. select month from system date.
+4. select last day of month when 'java' book published.
+*/
+/*create table Employee with emp_id (number),emp_name(char(50)) and insert some value.
+1. Add one column name 'dept_id ' in table name 'Employee';
+2. Change the datatype of column 'char' from tablename 'Employee' to 'varchar2'.
+3. update name of employee to 'Scott'
+4. truncate the table.
+*/
+create table employee(emp_id integer(10),emp_name char(50));
+insert into employee values(1,'aparna');
+alter table employee modify emp_name varchar(10);
+update employee set emp_name="thakre" where emp_id=1;
+truncate employee;
+SELECT CHAR_LENGTH("SQL cammands");
+SELECT CONCAT("SQL ",  "is ", "fun!");
+
+/*1. round
+2. truncate 
+3. ceil
+4. floor
+5. sign(-15)
+6. mod
+7. sqrt
+8. power
+*/
+SELECT ROUND(235.415, 2);
+select ceil(245.23);
+select floor(240.15);
+select sign(-15);
+select mod(150,2);
+select sqrt(144);
+select power(4,2);
+
+
+************************************************
+Assignment 3
+
+ use assignment2;
+/*
+1)	create table Department with dept_id(integer),dept_name(varchar(50)).
+dept_id will be foreign key in Employee table.*/
+create table department(dept_id integer(20) primary key ,dept_name varchar(50));
+drop table department;
+/*dept_id		dept_name
+1		Finance
+2		Training
+3		Marketing*/
+insert into department values(1,"finance"),(2,"training"),(3,"marketing");
+/*
+empid	emp_name	dept_id	salary	 manager
+1	Arun		1		8000	  4
+2 	kiran		1		7000	  1	
+3	Scott		1		3000	  1
+4	Max		2		9000	
+5	Jack		2		8000	  4
+6	King				6000	  1*/
+create table employee1(emp_id int,emp_name varchar(20),dept_id int(10),salary int(20),manager int, constraint fk_deptEmp foreign key (dept_id) references department(dept_id));
+insert into employee1 values(1,"arun",1,8000,4),(2,"kiran",1,7000,1);
+
+-- select all from authors sort ascending by author name.
+select * from authors order by aname asc;
+-- select all from publishers sort descending by publisher name
+select * from publishers order by pname desc;
+
+/*. select all data and sum of salary from employee and group according to deptid.
+2. select deptid and sum of salary where salary is greater than 17000 and group by deptid.
+*/
+
+select sum(salary) from employee1 group by dept_id;
+select sum(salary)  from employee1 where salary >17000 group by dept_id;
+
+/*
+1. select deptid and sum of salary where sum of salary is greater than 18000 and grup by deptid.  
+2. select deptid and sum of salary where sum of salary is less than 20000 and grup by deptid.
+*/
+
+select dept_id,sum(salary) from employee1 group by dept_id having sum(salary)>18000;
+select dept_id,sum(salary) from employee1 group by dept_id having sum(salary)<20000;
+
+select salary(float(2,1)) from employee1;
+
+DELIMITER ##
+create procedure myproc(in var int, out num int)
+begin 
+	select count(dept_id) into num from department where dept_id=var;
+  
+    end##
+    
+    call myproc(1, @n);
+    select @cot
+****************************************************
+
+Assignment 4
+
+use assignment2;
+--  select dept_name and emp_name where dept_id is same.
+SELECT department.dept_name, employee1.emp_name
+FROM employee1
+INNER JOIN department ON department.dept_id=employee1.dept_id;
+
+-- select all from both tables where dept_id is same.
+select * from employee1  join department on department.dept_id=employee1.dept_id;
+
+-- . select dept_id and sum of salary group it by dept_id.
+select department.dept_id,sum(salary) from employee1  inner join department 
+on department.dept_id=employee1.dept_id
+group by department.dept_id;
+
+-- select dept_name and emp_name apply right outer join and left outer join
+
+select department.dept_name,employee1.emp_name from employee1
+right join department on department.dept_id=employee1.dept_id;
+
+select department.dept_name,employee1.emp_name from employee1
+left join department on department.dept_id=employee1.dept_id;
+
+-- select emp_name with their respective manager names
+
+select employee1.emp_name,employee1.manager from employee1;
+
+-- select epm_name with their respective department names.
+
+select employee1.emp_name,department.dept_name from employee1 
+inner join department on department.dept_id=employee1.dept_id;
+
+/*
+Emp1			Emp2
+emp_no     emp_name	emp_no     emp_name
+---------------------   ------------------------
+1		A		1		A
+2		B		2		B
+3		C		4		D
+				5		E
+*/
+
+
+create table emp1(emp_no int(10),emp_name varchar(50));
+create table emp2(emp_no int(10),emp_name varchar(50));
+
+insert into emp1 values(1,'A'),(2,'b'),(3,'c');
+insert into emp2 values(1,'A'),(2,'b'),(4,'d'),(5,'e');
+
+select * from emp1
+union
+select * from emp2;
+select * from employee1;
+-- select employee having  same salary as 'Arun'.
+SELECT * FROM employee1 WHERE salary  > (SELECT salary FROM employee1 where
+emp_name = ‘kiran’);
+
+SELECT * FROM employee1 WHERE salary = (SELECT salary FROM employee1
+WHERE emp_name = ‘arun’);
+
+/*
+select employee belonging to same dept as 'jack'.
+3. select name of employee havin lowest salary.
+4. update salary =15000 of employees belonging to same dept as 'Max'.
+
+*/
+select emp_name from employee1 where salary=(select min(salary) from employee1);
+
+update employee1 set salary =15000 where dept_id=(select dept_id from department where dept_id=2);
+
+select * from employee1 where dept_id=(select dept_id from department where dept_id=1);
+**************************************************
+
+Assignment 5
+
+create database demo;
+use demo;
+drop table emp;
+Create table EMP ( EMPNO numeric(4) not null, ENAME varchar(30)
+ not null, JOB varchar(10), MGR numeric(4), HIREDATE date, SAL numeric(7,2), DEPTNO integer(50) ); 
+ Insert into EMP  values(1000,  'Manish' , 'SALESMAN',1003,  '2020-02-18', 600,  30) ;
+Insert into EMP 
+values(1001,  'Manoj' , 'SALESMAN', 1003,  '2018-02-18', 600,  30) ;
+Insert into EMP 
+ values(1002 , 'Ashish', 'SALESMAN',1003 , '2013-02-18',  750,  30 );
+Insert into EMP 
+ values(1004,  'Rekha', 'ANALYST', 1006 , '2001-02-18', 3000,  10);
+Insert into EMP 
+values(1005 , 'Sachin', 'ANALYST', 1006 ,  '2019-02-18', 3000, 10 );
+Insert into EMP 
+values(1006,  'Pooja',  'MANAGER'  ,     null    , '2000-02-18' ,6000, 10 );
+select * from emp;
+
+Create table dept (dno numeric(4) not null, dname varchar(10) not null,area varchar(30));
+Insert into dept(dno,dname,area) values(10,'Store','Mumbai');
+Insert into dept(dno,dname,area) values(20,'Purchase','Mumbai');
+Insert into dept(dno,dname,area) values(30,'Store', 'Delhi');
+Insert into dept(dno,dname,area) values(40,'Marketing','Pune');
+Insert into dept(dno,dname,area) values(50,'Finance','Delhi');
+Insert into dept(dno,dname,area) values(60,'Accounts','Mumbai');
+
+/*1.	Write a Procedure that accepts values of two non-zero numbers using
+ IN parameter and perform addition, subtraction, multiplication, division and print.*/
+ 
+ delimiter $$
+ create procedure abc(in var1 int,in var2 int)
+ begin 
+
+ select var1+var2;
+ select var1-var2;
+ select var1*var2;
+ select var1/var2;
+ end$$
+ call abc(2,3);
+ 
+ /*2.	Write a Procedure to print the string in
+ REVERSE order. Take the input using IN parameter. (Ex .Database , o/p :esabatad)*/
+ 
+ delimeter $$
+ 
+ create procedure reverse1( var varchar(50))
+ begin
+ select reverse(var);
+ end$$
+ call reverse1('database');
+ 
+ 
+ /*3.	Write a Procedure to display top 5 
+ employee based on highest salary and display employee number, employee name and salary.*/
+ 
+ delimeter $$
+ create procedure que4()
+ begin
+ 
+ select empno ,ename,sal from emp order by sal desc limit 5;
+end;
+end$$
+call que4();
+
+/*4.	Write a Procedure to create table emp_test
+ with e_id integer, e_name varchar(10), e_joining_date date as columns*/
+ 
+ delimiter $$
+ create procedure one()
+ begin 
+ create table emp_test(e_id integer(10),e_name varchar(10),e_joining_date date);
+
+ end$$
+ call one();
+ 
+ /*5.	Write a Procedure to add a department row in the DEPT table with the following values for columns*/
+ 
+ delimiter $$
+ create procedure three()
+ begin
+ Insert into dept(dno,dname,area) values(70,'Store','nagpur');
+end$$
+ 
+ call three();
+ 
+ /*6.	Write a program that declares an integer variable called num, 
+ assigns a value to it and print, the value of the variable itself, its square, and its cube.*/
+ 
+ delimiter $$
+ 
+ create procedure four1(in num int)
+ begin
+ 
+ select num;
+ select num*num;
+ select num*num*num;
+end$$
+
+call four1(5);
+
+ delimiter $$
+ create procedure four3(out b int)
+ begin
+ declare c int default 10;
+declare a int default 20;
+set b=a+c;
+ 
+end$$
+
+call four3(@b);
+select @b;
+
+
+ /* 8.	Write a program that demonstrates the usage of IN and OUT parameters.*/
+ 
+ delimiter $$
+
+CREATE PROCEDURE SP_2(INOUT STR VARCHAR(10))
+
+BEGIN
+SET STR=(SELECT REVERSE(STR));END $$
+
+SET @STR='DATABASE';
+end$$
+
+
+CALL SP_2(@STR);
+
+SELECT @STR AS REV;
+
+**********************************************
+Assignment 6
+
+/* 1.	Write function that accepts a positive number from a user and displays its factorial 
+on the screen.create database functions;*/
+
+use functions;
+Create table EMP ( EMPNO numeric(4) not null, ENAME varchar(30)
+ not null, JOB varchar(10), MGR numeric(4), HIREDATE date, SAL numeric(7,2), DEPTNO integer(50) ); 
+ Insert into EMP  values(1000,  'Manish' , 'SALESMAN',1003,  '2020-02-18', 600,  30) ;
+Insert into EMP 
+values(1001,  'Manoj' , 'SALESMAN', 1003,  '2018-02-18', 600,  30) ;
+Insert into EMP 
+ values(1002 , 'Ashish', 'SALESMAN',1003 , '2013-02-18',  750,  30 );
+Insert into EMP 
+ values(1004,  'Rekha', 'ANALYST', 1006 , '2001-02-18', 3000,  10);
+Insert into EMP 
+values(1005 , 'Sachin', 'ANALYST', 1006 ,  '2019-02-18', 3000, 10 );
+Insert into EMP 
+values(1006,  'Pooja',  'MANAGER'  ,     null    , '2000-02-18' ,6000, 10 );
+
+select * from emp;
+
+delimiter $$
+CREATE FUNCTION FACT(X INT) RETURNS INT
+BEGIN
+DECLARE FACT INT;
+DECLARE I INT;
+SET FACT=1 , I=1;
+
+L1:LOOP
+	IF X>0 THEN 
+		SET FACT=FACT*I;
+		SET I=I+1;
+		SET X=X-1;
+		ITERATE L1;
+		ELSE
+		LEAVE L1;
+	END IF;
+	END LOOP L1;
+RETURN FACT;
+END$$
+
+SELECT FACT(3);
+
+
+/*2.	Write a function that accepts a positive number ‘n’ and displays whether that
+ number is a Prime number or not.*/
+ 
+ delimeter $$
+ create function prime1(x int) returns varchar(50)
+ begin
+	DECLARE M ,I INT;
+	SET I=2;
+	SET M=X/2;
+	IF X=0 || X=1 THEN 
+		RETURN 'NOT PRIME';
+    ELSE
+		L1: LOOP
+		WHILE I<=M DO
+			IF X%2=0 THEN 
+				RETURN 'NOT PRIME';
+				LEAVE L1;
+				ELSE
+				SET I=I+1;
+				ITERATE L1;
+			END IF;
+	   END WHILE;
+       RETURN 'PRIME';
+	END LOOP L1;
+	END IF;
+END$$
+
+SELECT PRIME1(44);
+
+
+/*3.	Write a function to Convert an inputed number of inches into yards,
+ feet, and inches. For example, 124 inches equals 3 yards, 1 foot, and 4 inches.*/
+ 
+ delimiter $$
+CREATE FUNCTION CON(NUM INT3) RETURNS VARCHAR(50)
+BEGIN
+RETURN CONCAT(NUM,' Inches ',round(NUM/36),' Yards ',round(NUM/12),' Foot ');
+END$$
+
+SELECT CON(124);
+ 
+ 
+ /*4.	Write a function to update salary of the employees of specified dept by 10%. Take dept no as parameter.*/
+ 
+ delimiter $$
+CREATE FUNCTION SAL(DEPTID INT3) RETURNS VARCHAR(50)
+BEGIN
+UPDATE EMP SET SAL=(SAL+(SAL*0.1)) WHERE DEPTNO=DEPTID;
+RETURN 'UPDATED';
+END$$
+SELECT * FROM EMP;
+
+SELECT SAL(10);
+
+/*5.	Create a function named USER_ANNUAL_COMP that has a parameter p_eno for passing on the values of  an employee number of the employee and p_comp for passing the compansation. In the function calculates and returns the annual compensation of the employee by using the following formula.
+annual_compensation =  (p_sal+p_comm)*12
+If the salary or commission value is NULL then zero should be substituted for it.  Give a call to USER_ANNUAL_COMP.
+*/
+
+delimiter $$
+CREATE FUNCTION USER_ANNUAL_COMP (P_ENO INT4,P_COMP INT4) RETURNS INT8
+BEGIN
+DECLARE ANNUAL_COM, SALR INT8;
+SET SALR=(SELECT (SAL) FROM EMP WHERE EMPNO=P_ENO);
+SET ANNUAL_COM = (SALR + P_COMP)*12;
+RETURN ANNUAL_COM;
+END$$
+SELECT SAL FROM EMP WHERE EMPNO=1004;
+SELECT USER_ANNUAL_COMP(1004,200);
+ 
+ 
+ /*6.	Create a procedure called USER_QUERY_EMP that accepts three parameters. 
+ Parameter p_myeno is of IN parameter mode which provides the empno value. The other two parameters
+ p_myjob and p_mysal are of OUT mode. The procedure retrieves the salary and job of an employee with 
+ the provided employee number and assigns those to the two OUT parameters respectively. The procedure
+ should raise the error if the empno does not exist in the EMP table by displaying an appropriate message*/
+ 
+ delimiter $$
+CREATE PROCEDURE USER_QUERY_EMP  (IN P_ENO INT, OUT P_JOB VARCHAR(10), OUT P_SAL INT3 ) 
+BEGIN
+DECLARE NO INT;
+SET NO = (SELECT COUNT(*) FROM EMP WHERE EMPNO=P_ENO);
+IF NO=0 THEN 
+SELECT 'employee not exists';
+SET P_JOB='';
+SET P_SAL=0;
+ELSE 
+SELECT SAL,JOB INTO P_SAL,P_JOB FROM EMP WHERE EMPNO=P_ENO;
+END IF;
+END$$
+
+CALL USER_QUERY_EMP(1004,@JOB,@SAL);
+SELECT @JOB,@SAL
+
+/*7.	Create a procedure to print the inputted string
+ in reverse order. If  inputted string is null display an appropriate message*/
+ 
+ 
+ delimiter $$
+CREATE PROCEDURE REV(IN STR VARCHAR(10),OUT REV VARCHAR(40))
+BEGIN
+IF isnull(STR) THEN
+	SET REV='STRING IS NULL';
+ELSE
+	SET REV=(SELECT REVERSE(STR));
+END IF;
+END $$
+SET @STR='DATABASE';
+CALL SP_2(@STR);
+SELECT @STR AS REV;
+ 
+ 
+ /*8.	Create a procedure named ‘tabledetails’ which gives all the details of a particular table stored in database.*/
+
+delimiter $$
+CREATE PROCEDURE tabledetails()
+BEGIN
+SHOW TABLES;
+END $$
+
+CALL tabledetails;
+
+    
+ **************************************************
+Assignment 7
+
+/* ************ Trigger *********** */
+
+CREATE TABLE  Ord_master(Ord_no INT primary KEY, Cust_cd VARCHAR(20),Status CHAR);
+CREATE TABLE  Ord_dtl(Ord_no INT,Prod_cd VARCHAR(20),Qty INT3,CONSTRAINT FK foreign key(Ord_no) references Ord_master(Ord_no));
+CREATE TABLE  Prod_master( Prod_cd varchar(10) primary KEY,Prod_name VARCHAR(20), Qty_in_stock INT4,Booked_qty INT4);
+insert into Ord_master values(1,'C1','P');
+insert into Ord_dtl values(1,'P1',100),(1,'P2',200);
+insert into Prod_master values('P1','Floppies',10000,1000),('P2','Printers',5000,600),('P3','Modems',3000,200);
+-- SELECT * FROM Ord_master;
+-- SELECT * FROM Ord_dtl;
+SELECT * FROM Prod_master;
+-- 1
+delimiter $$
+CREATE TRIGGER QUE1 BEFORE INSERT ON Ord_dtl
+FOR EACH ROW 
+BEGIN
+UPDATE Prod_master SET Booked_qty=Booked_qty + NEW.Qty WHERE  Prod_cd=NEW.Prod_cd;
+END$$
+insert into Ord_dtl values(1,'P3',100);
+-- delete from Ord_dtl where Prod_cd='P3'
+
+-- 2
+delimiter $$
+CREATE TRIGGER QUE2 AFTER DELETE ON Ord_dtl
+FOR EACH ROW 
+BEGIN
+UPDATE Prod_master SET Booked_qty=Booked_qty - OLD.Qty WHERE  Prod_cd=OLD.Prod_cd;
+END$$
+
+CREATE TABLE dept_sal (dept_no INT , tota_salary INT4); 
+
+INSERT INTO DEPT_SAL VALUES(30,1950),(10,12000)
+-- SELECT * FROM EMP;
+-- SELECT * FROM DEPT_SAL;
+
+-- 3
+delimiter $$
+CREATE TRIGGER QUE3 AFTER INSERT ON EMP
+FOR EACH ROW
+BEGIN
+UPDATE DEPT_SAL SET tota_salary=tota_salary + NEW.SAL WHERE DEPT_NO=NEW.DEPTNO;
+END$$
+-- INSERT INTO EMP values(1007 , 'aparna', 'DEVELOPER', 1006 ,  '2019-02-18', 5000, 30 );
+
+-- 4
+delimiter $$
+CREATE TRIGGER QUE4 AFTER DELETE ON EMP
+FOR EACH ROW
+BEGIN
+UPDATE DEPT_SAL SET tota_salary=tota_salary - OLD.SAL WHERE DEPT_NO=OLD.DEPTNO;
+END$$
+-- DELETE FROM EMP WHERE EMPNO=1007
+************************************************
+
+Assignment 8
+
+use demo;
+/* Write a Procedure that displays names and salaries of all Analysts recorded in the “emp” table by making use of a cursor.  */
+
+delimiter &&
+create procedure disp_name_sal()
+begin
+declare highest_sal int ;
+declare Ename21 varchar(50) ;
+declare display cursor for select Ename,sal from emp ;
+open display ;
+fetch display into Ename21,highest_sal ;
+select  Ename,sal from emp where job = 'Analyst' ;
+close display ;
+end &&
+
+call disp_name_sal() ;
+
+/* 2.	Write a Procedure to display top 5 employees based on highest salary and display employee number, employee name and salary using Cursor. */
+drop procedure disp_top5 ;
+delimiter &&
+create procedure disp_top5()
+begin
+declare sal1 int ;
+declare Ename21 varchar(50) ;
+declare empno1 int ;
+declare display cursor for select empno,Ename,sal from emp ;
+open display ;
+fetch display into empno1,Ename21,sal1 ;
+select empno, Ename,sal from emp  order by sal desc limit 5 ;
+close display ;
+end &&
+delimiter ;
+call disp_top5() ;
+
+
+
+/*3 .Write  a procedure to display the concatenated first_name and last_name from “emp” table using cursors handle the  errors with Exit handler */
+
+drop procedure frist_Last_Name;
+delimiter &&
+create procedure frist_Last_Name()
+begin
+declare firstname varchar(50);
+declare lastname varchar(50) ;
+declare finished integer default 0;
+declare fullname varchar(50);
+declare display cursor for select ename from emp ;
+declare exit handler for NOT FOUND set finished = 1 ;
+open display ;
+	getname : LOOP
+		fetch display into firstname;
+		if(finished = 1 ) then
+        set fullname = concat (firstname," ",lastname);
+			leave getname;
+		end if ;
+        select "error handled";
+	end LOOP getname;
+close display ;
+end &&
+delimiter ;
+select * from emp ;
+call frist_Last_Name();
+
+
+
+/*	4.	Write a procedure which select all the data from employee table and display the data of 
+employee where employee name is ‘Manish’ using cursors. */
+
+drop procedure emp_details;
+delimiter &&
+create procedure emp_details()
+begin
+declare empno int;
+declare empname varchar(30);
+declare emp_job varchar(20);
+declare emp_mgr decimal(4,0);
+declare emp_hiredate date;
+declare emp_sal decimal(7,2);
+declare dept_no decimal(2,0);
+
+declare display cursor for select * from emp ;
+open display ;
+fetch display into empno,empname,emp_job,emp_mgr,emp_hiredate,emp_sal,dept_no ;
+select * from emp where ename = 'Manish' ;
+close display ;
+end &&
+
+call emp_details();
+
+
+/*5. Write a procedure which select delete the data from employee table if emp sal is less than 10000  using cursor and handle the  Sqlexception with continue handler */
+
+drop procedure details;
+delimiter &&
+create procedure details()
+begin
+declare empno int;
+declare empname varchar(30);
+declare emp_job varchar(20);
+declare emp_mgr decimal(4,0);
+declare emp_hiredate date;
+declare emp_sal decimal(7,2);
+declare dept_no decimal(2,0);
+declare finished integer default 0;
+
+declare display cursor for select * from emp ;
+declare continue handler for SQLException set finished = 1 ;
+
+open display ;
+	-- getsal : LOOP
+		fetch display into empno,empname,emp_job,emp_mgr,emp_hiredate,emp_sal,dept_no;
+		/*if(finished = 1 ) then*/
+             delete from emp where sal < 1000;
+			-- leave getsal;
+		-- end if ;
+        -- select 'error handled';
+	-- end LOOP getsal;
+close display ;
+end &&
+delimiter ;
+
+select * from emp; 
+call details();
+***************************************************
+
+Assignment 9
+
+use assignment2;
+
+/*1.	Find all the employee name starting with ‘sc’;*/
+
+select emp_name from employee1 where emp_name regexp '^[ak]';
+
+select * from employee1;
+
+/*2.	Find all the employee name endiing with ‘ng’;*/
+select emp_name from employee1 where emp_name regexp 'an$';
+
+/*3.	write query to find all employee job containing characters ’io’ or ‘ea’.*/
+select emp_name from employee1 where emp_name regexp 'an|ru';
+
+/*4.	Write a query to find all names containing characters {s,d}.*/
+
+select emp_name from employee1 where emp_name regexp '[a,r]';
+
+/*5.	CREATE TABLE tutorial (
+id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+title VARCHAR(200), 
+description TEXT, 
+FULLTEXT(title,description)
+) ;
+*/
+	CREATE TABLE tutorial (
+id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+title VARCHAR(200), 
+description TEXT, 
+FULLTEXT(title,description)
+) ;
+
+
+INSERT INTO tutorial (title,description) VALUES
+('SQL Joins','An SQL JOIN clause combines rows from two or more tables. It creates a set of rows in a temporary table.'),
+('SQL Equi Join','SQL EQUI JOIN performs a JOIN against equality or matching column(s) values of the associated tables. An equal sign (=) is used as comparison operator in the where clause to refer equality.'),
+('SQL Left Join','The SQL LEFT JOIN, joins two tables and fetches rows based on a condition, which is matching in both the tables and the unmatched rows will also be available from the table before the JOIN clause.'),
+('SQL Cross Join','The SQL CROSS JOIN produces a result set which is the number of rows in the first table multiplied by the number of rows in the second table, if no WHERE clause is used along with CROSS JOIN.'),
+('SQL Full Outer Join','In SQL the FULL OUTER JOIN combines the results of both left and right outer joins and returns all (matched or unmatched) rows from the tables on both sides of the join clause.'),
+('SQL Self Join','A self join is a join in which a table is joined with itself (which is also called Unary relationships), especially when the table has a FOREIGN KEY which references its own PRIMARY KEY.');
+
+/*6.	Write a query to find ‘Left right’ in description field.*/
+
+SELECT * FROM tutorial WHERE MATCH(title,description) AGAINST('left+right'in boolean mode);
+
+/*7.	Write a query to find the count of ‘Left right’ string matches in description field.*/
+
+SELECT count(*) FROM tutorial WHERE MATCH(title,description) AGAINST('left right' in boolean mode);
+
+
+/*8.	Write a query that retrieves all the rows that contain the word 'Joins' but not 'right'.*/
+
+SELECT * FROM tutorial WHERE MATCH(title,description) AGAINST('+join -right'in boolean mode);
+
+
+
+**********************************************
+ 
+ 
+ 
+
+
+
